@@ -57,11 +57,11 @@ private:
     void handlePauseInd(std::unique_ptr<Event>);
 
     bool isSegmentAtPosition(int x, int y) const;
-    Segment calculateNewHead() const;
-    void updateSegmentsIfSuccessfullMove(Segment const& newHead);
-    void addHeadSegment(Segment const& newHead);
-    void removeTailSegmentIfNotScored(Segment const& newHead);
-    void removeTailSegment();
+    //Segment calculateNewHead() const;
+    // void updateSegmentsIfSuccessfullMove(Segment const& newHead);
+    // void addHeadSegment(Segment const& newHead);
+    // void removeTailSegmentIfNotScored(Segment const& newHead);
+    // void removeTailSegment();
 
     bool isPositionOutsideMap(int x, int y) const;
 

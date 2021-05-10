@@ -7,12 +7,13 @@
 
 #include "IEventHandler.hpp"
 #include "SnakeInterface.hpp"
-
+#include "SnakeController.cpp"
 class Event;
 class IPort;
 
 class SnakeSegment
 {
+
 public:
 
 
@@ -26,5 +27,10 @@ private:
 
     std::list<Segment> m_segments;
 
+    Segment calculateNewHead() const;
+    void updateSegmentsIfSuccessfullMove(Segment const& newHead);
+    void addHeadSegment(Segment const& newHead);
+    void removeTailSegmentIfNotScored(Segment const& newHead);
+    void removeTailSegment();
 
 };
