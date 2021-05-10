@@ -65,7 +65,7 @@ Controller::Controller(IPort& p_displayPort, IPort& p_foodPort, IPort& p_scorePo
 }
 void Controller::handleTimeoutInd()
 {
-    updateSegmentsIfSuccessfullMove(calculateNewHead());
+    updateSegmentsIfSuccessfullMove(SnakeSegment::calculateNewHead());
 }
 
 void Controller::handleDirectionInd(std::unique_ptr<Event> e)
@@ -109,7 +109,7 @@ void Controller::sendClearOldFood()
     m_displayPort.send(std::make_unique<EventT<DisplayInd>>(clearOldFood));
 }
 
-namespace 
+namespace Dupa
 {
 bool isHorizontal(Direction direction)
 {
@@ -144,64 +144,64 @@ bool perpendicular(Direction dir1, Direction dir2)
 //     return newHead;
 // }
 
-// void Controller::removeTailSegment()
-// {
-//     auto tail = m_segments.back();
+void Controller::removeTailSegment()
+{
+    auto tail = m_segments.back();
 
-//     DisplayInd l_evt;
-//     l_evt.x = tail.x;
-//     l_evt.y = tail.y;
-//     l_evt.value = Cell_FREE;
-//     m_displayPort.send(std::make_unique<EventT<DisplayInd>>(l_evt));
+    DisplayInd l_evt;
+    l_evt.x = tail.x;
+    l_evt.y = tail.y;
+    l_evt.value = Cell_FREE;
+    m_displayPort.send(std::make_unique<EventT<DisplayInd>>(l_evt));
 
-//     m_segments.pop_back();
-// }
+    m_segments.pop_back();
+}
 
-// void Controller::addHeadSegment(Segment const& newHead)
-// {
-//     m_segments.push_front(newHead);
+void Controller::addHeadSegment(Segment const& newHead)
+{
+    m_segments.push_front(newHead);
 
-//     DisplayInd placeNewHead;
-//     placeNewHead.x = newHead.x;
-//     placeNewHead.y = newHead.y;
-//     placeNewHead.value = Cell_SNAKE;
+    DisplayInd placeNewHead;
+    placeNewHead.x = newHead.x;
+    placeNewHead.y = newHead.y;
+    placeNewHead.value = Cell_SNAKE;
 
-//     m_displayPort.send(std::make_unique<EventT<DisplayInd>>(placeNewHead));
-// }
+    m_displayPort.send(std::make_unique<EventT<DisplayInd>>(placeNewHead));
+}
 
-// void Controller::removeTailSegmentIfNotScored(Segment const& newHead)
-// {
-//     if (std::make_pair(newHead.x, newHead.y) == m_foodPosition) {
-//         m_scorePort.send(std::make_unique<EventT<ScoreInd>>());
-//         m_foodPort.send(std::make_unique<EventT<FoodReq>>());
-//     } else {
-//         removeTailSegment();
-//     }
-// }
+void Controller::removeTailSegmentIfNotScored(Segment const& newHead)
+{
+    if (std::make_pair(newHead.x, newHead.y) == m_foodPosition) {
+        m_scorePort.send(std::make_unique<EventT<ScoreInd>>());
+        m_foodPort.send(std::make_unique<EventT<FoodReq>>());
+    } else {
+        removeTailSegment();
+    }
+}
 
-// void Controller::updateSegmentsIfSuccessfullMove(Segment const& newHead)
-// {
-//     if (isSegmentAtPosition(newHead.x, newHead.y) or isPositionOutsideMap(newHead.x, newHead.y)) {
-//         m_scorePort.send(std::make_unique<EventT<LooseInd>>());
-//     } else {
-//         addHeadSegment(newHead);
-//         removeTailSegmentIfNotScored(newHead);
-//     }
-// }
+void Controller::updateSegmentsIfSuccessfullMove(Segment const& newHead)
+{
+    if (isSegmentAtPosition(newHead.x, newHead.y) or isPositionOutsideMap(newHead.x, newHead.y)) {
+        m_scorePort.send(std::make_unique<EventT<LooseInd>>());
+    } else {
+        addHeadSegment(newHead);
+        removeTailSegmentIfNotScored(newHead);
+    }
+}
 
-// void Controller::handleTimeoutInd()
-// {
-//     updateSegmentsIfSuccessfullMove(calculateNewHead());
-// }
+void Controller::handleTimeoutInd()
+{
+    updateSegmentsIfSuccessfullMove(calculateNewHead());
+}
 
-// void Controller::handleDirectionInd(std::unique_ptr<Event> e)
-// {
-//     auto direction = payload<DirectionInd>(*e).direction;
+void Controller::handleDirectionInd(std::unique_ptr<Event> e)
+{
+    auto direction = payload<DirectionInd>(*e).direction;
 
-//     if (perpendicular(m_currentDirection, direction)) {
-//         m_currentDirection = direction;
-//     }
-// }
+    if (perpendicular(m_currentDirection, direction)) {
+        m_currentDirection = direction;
+    }
+}
 
 void Controller::updateFoodPosition(int x, int y, std::function<void()> clearPolicy)
 {
