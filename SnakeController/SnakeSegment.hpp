@@ -18,8 +18,6 @@ class SnakeSegment
 public:
 
 
-
-
     struct Segment
     {
         int x;

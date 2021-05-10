@@ -1,3 +1,4 @@
+#pragma once
 #include "SnakeSegment.hpp"
 #include "SnakeController.cpp"
 

@@ -10,6 +10,7 @@
 
 namespace Snake
 {
+
 ConfigurationError::ConfigurationError()
     : std::logic_error("Bad configuration of Snake::Controller.")
 {}
@@ -65,14 +66,15 @@ Controller::Controller(IPort& p_displayPort, IPort& p_foodPort, IPort& p_scorePo
 }
 void Controller::handleTimeoutInd()
 {
-    updateSegmentsIfSuccessfullMove(SnakeSegment::calculateNewHead());
+   
+    updateSegmentsIfSuccessfullMove(calculateNewHead());
 }
 
 void Controller::handleDirectionInd(std::unique_ptr<Event> e)
 {
     auto direction = payload<DirectionInd>(*e).direction;
 
-    if (perpendicular(m_currentDirection, direction)) {
+    if (Dupa::perpendicular(m_currentDirection, direction)) {
         m_currentDirection = direction;
     }
 }
@@ -198,7 +200,7 @@ void Controller::handleDirectionInd(std::unique_ptr<Event> e)
 {
     auto direction = payload<DirectionInd>(*e).direction;
 
-    if (perpendicular(m_currentDirection, direction)) {
+    if (Dupa::perpendicular(m_currentDirection, direction)) {
         m_currentDirection = direction;
     }
 }
